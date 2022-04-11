@@ -23,6 +23,20 @@ const Room = mongoose.model('Room', roomSchema);
 // Room > rooms
 // 若不要這樣，可以透過 Schema 修改規則
 
+// 實例、實體 instance
+const testRoom = new Room({
+  name:'簡約單人房',
+  price: 1600,
+  rating: 4.5
+})
+
+testRoom.save()
+  .then(()=>{
+    console.log('新增資料成功');
+  }).catch(err=>{
+    console.log(err.errors);
+  })
+
 const requestListener = (req, res) => {
   console.log(req.url);
   res.end();
