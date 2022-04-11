@@ -8,14 +8,20 @@ mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
   console.log(err.reason); // 連線失敗
 })
 
-const roomSchema = {
-  name: String,
-  price: {
-    type: Number,
-    required: [true, "價格必填"]
+// Schema 定義
+const roomSchema = new mongoose.Schema(
+  {
+    name: String,
+    price: {
+      type: Number,
+      required: [true, "價格必填"]
+    },
+    rating: Number
   },
-  rating: Number
-}
+  {
+    versionKey: false  // 移除 versionKey、__v欄位
+  }
+)
 
 const Room = mongoose.model('Room', roomSchema);
 // mongoose 會自動修正 collection 的名稱
@@ -25,7 +31,7 @@ const Room = mongoose.model('Room', roomSchema);
 
 // 實例、實體 instance
 const testRoom = new Room({
-  name:'簡約單人房',
+  name:'簡約單人房4',
   price: 1600,
   rating: 4.5
 })
