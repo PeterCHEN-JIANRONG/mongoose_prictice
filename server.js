@@ -21,7 +21,10 @@ const roomSchema = new mongoose.Schema(
   },
   {
     versionKey: false,  // 移除 versionKey、__v欄位
-    timestamps: true    // 加入 createdAt、updatedAt 時間
+    timestamps: { 
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    } 
   }
 )
 
