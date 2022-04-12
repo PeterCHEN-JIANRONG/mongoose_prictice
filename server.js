@@ -34,19 +34,31 @@ const Room = mongoose.model('Room', roomSchema);
 // 強制全小寫、最後自動加 s，ex: Room > rooms
 // 若不要這樣，可以透過 Schema 修改規則
 
-// 實例、實體 instance
-const testRoom = new Room({
-  name:'簡約單人房5',
+// 新增方法二： create
+Room.create({
+  name:'簡約單人房6',
   price: 1600,
   rating: 4.5
+}).then(()=>{
+  console.log('新增成功');
+}).catch((err)=>{
+  console.log(err.errors);
 })
 
-testRoom.save()
-  .then(()=>{
-    console.log('新增資料成功');
-  }).catch(err=>{
-    console.log(err.errors);
-  })
+
+// 新增方法一： 實例、實體 instance
+// const testRoom = new Room({
+//   name:'簡約單人房5',
+//   price: 1600,
+//   rating: 4.5
+// })
+
+// testRoom.save()
+//   .then(()=>{
+//     console.log('新增資料成功');
+//   }).catch(err=>{
+//     console.log(err.errors);
+//   })
 
 const requestListener = (req, res) => {
   console.log(req.url);
