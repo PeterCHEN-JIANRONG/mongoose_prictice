@@ -17,14 +17,15 @@ const roomSchema = new mongoose.Schema(
       type: Number,
       required: [true, "價格必填"]
     },
-    rating: Number
+    rating: Number,
+    createdAt: {
+      type: Date,         // Date 型別
+      default: Date.now,  // 現在時間
+      select: false       // 預設 find() 不會撈到
+    }
   },
   {
     versionKey: false,  // 移除 versionKey、__v欄位
-    timestamps: { 
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    } 
   }
 )
 
