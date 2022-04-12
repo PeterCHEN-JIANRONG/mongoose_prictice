@@ -1,3 +1,4 @@
+const { timeStamp } = require('console');
 const http = require('http');
 const mongoose = require('mongoose');
 
@@ -19,19 +20,19 @@ const roomSchema = new mongoose.Schema(
     rating: Number
   },
   {
-    versionKey: false  // 移除 versionKey、__v欄位
+    versionKey: false,  // 移除 versionKey、__v欄位
+    timestamps: true    // 加入 createdAt、updatedAt 時間
   }
 )
 
 const Room = mongoose.model('Room', roomSchema);
 // mongoose 會自動修正 collection 的名稱
-// 開頭小寫、自動加 s
-// Room > rooms
+// 強制全小寫、最後自動加 s，ex: Room > rooms
 // 若不要這樣，可以透過 Schema 修改規則
 
 // 實例、實體 instance
 const testRoom = new Room({
-  name:'簡約單人房4',
+  name:'簡約單人房5',
   price: 1600,
   rating: 4.5
 })
