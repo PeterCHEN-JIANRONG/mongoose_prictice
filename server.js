@@ -1,6 +1,6 @@
-const { timeStamp } = require('console');
 const http = require('http');
 const mongoose = require('mongoose');
+const Room = require('./models/room');
 
 // 連線資料庫
 mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
@@ -9,34 +9,9 @@ mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
   console.log(err.reason); // 連線失敗
 })
 
-// Schema 定義
-const roomSchema = new mongoose.Schema(
-  {
-    name: String,
-    price: {
-      type: Number,
-      required: [true, "價格必填"]
-    },
-    rating: Number,
-    createdAt: {
-      type: Date,         // Date 型別
-      default: Date.now,  // 現在時間
-      select: false       // 預設 find() 不會撈到
-    }
-  },
-  {
-    versionKey: false,  // 移除 versionKey、__v欄位
-  }
-)
-
-const Room = mongoose.model('Room', roomSchema);
-// mongoose 會自動修正 collection 的名稱
-// 強制全小寫、最後自動加 s，ex: Room > rooms
-// 若不要這樣，可以透過 Schema 修改規則
-
 // 新增方法二： create
 Room.create({
-  name:'簡約單人房6',
+  name:'簡約單人房7',
   price: 1600,
   rating: 4.5
 }).then(()=>{
