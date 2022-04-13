@@ -58,6 +58,12 @@ const requestListener = async (req, res) => {
         errorHandle(res, err.errors)
       }
     })
+  } else if( req.method === REQUEST_METHOD.OPTIONS){
+    res.writeHead(200, HEADERS);
+    res.end();
+  } else {
+    // 404 頁
+    errorHandle(res, '無此網站路由', 404);
   }
 }
 
