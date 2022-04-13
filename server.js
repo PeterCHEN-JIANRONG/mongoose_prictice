@@ -1,27 +1,22 @@
 const http = require('http');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const { HEADERS, REQUEST_METHOD } = require('./methods/constant');
 const { errorHandle, successHandle } = require('./methods/httpHandle');
-const mongoose = require('mongoose');
 const Room = require('./models/room');
 
+// 載入 .env
+dotenv.config({path:"./config.env"});
+// 遠端資料庫
+const DBUrl = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD);
+
 // 連線資料庫
-mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
+// 本地: 'mongodb://localhost:27017/hotel'
+mongoose.connect(DBUrl).then(()=>{
   console.log('連線成功'); // 連線成功
 }).catch((err)=>{
   console.log(err.reason); // 連線失敗
 })
-
-// 新增方法二： create
-// Room.create({
-//   name:'簡約單人房7',
-//   price: 1600,
-//   rating: 4.5
-// }).then(()=>{
-//   console.log('新增成功');
-// }).catch((err)=>{
-//   console.log(err.errors);
-// })
-
 
 const requestListener = async (req, res) => {
   
@@ -100,4 +95,4 @@ const requestListener = async (req, res) => {
 
 // server 監聽
 const server = http.createServer(requestListener);
-server.listen(3005);
+server.listen(process.env.PORT);
