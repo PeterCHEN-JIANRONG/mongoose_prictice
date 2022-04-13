@@ -58,6 +58,29 @@ const requestListener = async (req, res) => {
         errorHandle(res, err.errors)
       }
     })
+  } else if ( req.url === '/rooms' && req.method === REQUEST_METHOD.DELETE){
+    const message = await Room.deleteMany({});
+    res.writeHead(200, HEADERS);
+    res.write(JSON.stringify({
+      status: 'success',
+      message:'全部刪除成功'
+    }))
+    res.end();
+  } else if ( req.url.startsWith('/rooms/') && req.method === REQUEST_METHOD.DELETE) {
+    const id = req.url.split('/').pop();
+    try {
+      const room = await Room.findByIdAndDelete(id); // 刪除資料
+      res.writeHead(200, HEADERS);
+      res.write(JSON.stringify({
+        status: 'success',
+        message:'單筆刪除成功'
+      }))
+      res.end();
+    } catch {
+      // id 不符合 ObjectId 格式會噴錯
+      errorHandle(res, 'id 格式錯誤')
+    }
+
   } else if( req.method === REQUEST_METHOD.OPTIONS){
     res.writeHead(200, HEADERS);
     res.end();
