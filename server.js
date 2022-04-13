@@ -71,7 +71,23 @@ const requestListener = async (req, res) => {
       errorHandle(res, 'id 格式錯誤')
     }
   } else if ( req.url.startsWith('/rooms/') && req.method === REQUEST_METHOD.PATCH) {
-    const id = req.url.split('/').pop();
+    req.on('end', async () => {
+      try{
+        const data = JSON.parse(body);
+        const id = req.url.split('/').pop();
+
+        const room = await Room.findByIdAndUpdate(id, data); // 修改資料
+        res.writeHead(200, HEADERS);
+        res.write(JSON.stringify({
+          status: 'success',
+          message:'更新資料成功'
+        }))
+        res.end();
+      } catch(err) {
+        // id 不符合 ObjectId 格式會噴錯
+        errorHandle(res, 'id 格式錯誤')
+      }
+    })
 
   } else if( req.method === REQUEST_METHOD.OPTIONS){
     res.writeHead(200, HEADERS);
