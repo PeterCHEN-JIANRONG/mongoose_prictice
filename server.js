@@ -1,4 +1,6 @@
 const http = require('http');
+const { HEADERS, REQUEST_METHOD } = require('./methods/constant');
+const { errorHandle, successHandle } = require('./methods/httpHandle');
 const mongoose = require('mongoose');
 const Room = require('./models/room');
 
@@ -10,34 +12,23 @@ mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
 })
 
 // 新增方法二： create
-Room.create({
-  name:'簡約單人房7',
-  price: 1600,
-  rating: 4.5
-}).then(()=>{
-  console.log('新增成功');
-}).catch((err)=>{
-  console.log(err.errors);
-})
-
-
-// 新增方法一： 實例、實體 instance
-// const testRoom = new Room({
-//   name:'簡約單人房5',
+// Room.create({
+//   name:'簡約單人房7',
 //   price: 1600,
 //   rating: 4.5
+// }).then(()=>{
+//   console.log('新增成功');
+// }).catch((err)=>{
+//   console.log(err.errors);
 // })
 
-// testRoom.save()
-//   .then(()=>{
-//     console.log('新增資料成功');
-//   }).catch(err=>{
-//     console.log(err.errors);
-//   })
 
-const requestListener = (req, res) => {
-  console.log(req.url);
-  res.end();
+const requestListener = async (req, res) => {
+  
+  if(req.url === '/rooms' && req.method === REQUEST_METHOD.GET){
+    const rooms = await Room.find();
+    successHandle(res, rooms);
+  }
 }
 
 // server 監聽
