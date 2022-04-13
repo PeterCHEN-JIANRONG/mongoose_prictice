@@ -25,9 +25,39 @@ mongoose.connect('mongodb://localhost:27017/hotel').then(()=>{
 
 const requestListener = async (req, res) => {
   
+  let body = '';
+  req.on('data', chunk => body+=chunk);
+    
   if(req.url === '/rooms' && req.method === REQUEST_METHOD.GET){
     const rooms = await Room.find();
     successHandle(res, rooms);
+  } else if ( req.url === '/rooms' && req.method === REQUEST_METHOD.POST){
+    req.on('end', async () => {
+      try{
+        const data = JSON.parse(body);
+        const room = await Room.create(data);
+        successHandle(res, room);
+      } catch(err) {
+        errorHandle(res, err.errors)
+      }
+    })
+  } else if ( req.url === '/rooms' && req.method === REQUEST_METHOD.POST){
+    req.on('end', async () => {
+      try{
+        const data = JSON.parse(body);
+
+        // 新增資料
+        const room = await Room.create({
+          name: data.name,
+          price: data.price,
+          rating: data.rating,
+          paymeny: data.payment,
+        });
+        successHandle(res, room);
+      } catch(err) {
+        errorHandle(res, err.errors)
+      }
+    })
   }
 }
 

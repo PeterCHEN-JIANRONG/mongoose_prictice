@@ -9,6 +9,7 @@ const roomSchema = new mongoose.Schema(
       required: [true, "價格必填"]
     },
     rating: Number,
+    payment: Array,
     createdAt: {
       type: Date,         // Date 型別
       default: Date.now,  // 現在時間
